@@ -1,0 +1,11 @@
+"model","local_foreignlocal:Estimate","local_foreignlocal:Pr(>|z|)","local_foreignlocal:Std. Error","local_foreignlocal:z value","mar_size_scaled:Estimate","mar_size_scaled:Pr(>|z|)","mar_size_scaled:Std. Error","mar_size_scaled:z value","nov_size_scaled:Estimate","nov_size_scaled:Pr(>|z|)","nov_size_scaled:Std. Error","nov_size_scaled:z value","X.Intercept.:Estimate","X.Intercept.:Pr(>|z|)","X.Intercept.:Std. Error","X.Intercept.:z value"
+"fruitcount.lf.mod.cond",0.089,0.544,0.146,0.606,0.544,0,0.041,13.209,NA,NA,NA,NA,0.699,0.093,0.416,1.679
+"fruitcount.lf.mod.zi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,0.274,0,0.066,4.164
+"germ.lf.mod.cond",-0.034,0.702,0.088,-0.383,NA,NA,NA,NA,NA,NA,NA,NA,-0.258,0.407,0.311,-0.829
+"marsize.lf.mod.cond",-0.068,0.708,0.182,-0.375,NA,NA,NA,NA,0.75,0,0.042,17.849,5.155,0,0.746,6.906
+"marsurv.lf.mod.cond",0.176,0.161,0.126,1.4,NA,NA,NA,NA,0.377,0,0.033,11.356,0.675,0.003,0.229,2.95
+"novsize.lf.mod.cond",0.027,0.708,0.073,0.374,NA,NA,NA,NA,NA,NA,NA,NA,3.047,0,0.118,25.803
+"seeds.lf.mod.cond",-0.006,0.965,0.128,-0.044,0.388,0,0.032,11.954,NA,NA,NA,NA,4.728,0,0.232,20.365
+"seeds.lf.mod.zi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,0.788,0,0.038,20.577
+"seedsall.lf.mod.cond",-0.061,0.629,0.127,-0.483,NA,NA,NA,NA,NA,NA,NA,NA,4.772,0,0.115,41.616
+"seedsall.lf.mod.zi",0.032,0.798,0.123,0.256,NA,NA,NA,NA,NA,NA,NA,NA,2.433,0,0.033,74.637
