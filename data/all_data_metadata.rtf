@@ -2,33 +2,79 @@
 {\fonttbl\f0\fswiss\fcharset0 Helvetica;}
 {\colortbl;\red255\green255\blue255;}
 {\*\expandedcolortbl;;}
-\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\margl1440\margr1440\vieww10800\viewh16480\viewkind0
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
 
 \f0\fs24 \cf0 all_data.csv metadata\
 \
-site\
-blk\
-type\
-sire\
-sirepop\
-dam\
-dampop\
-nov_germ\
-nov_size\
-mar_surv\
-mar_size\
-fruit_count\
-total_est_seeds\
-abs_tave_diff_sep_nov_scaled\
-abs_tave_diff_dec_mar_scaled\
-abs_tave_diff_apr_jul_scaled\
-abs_tave_diff_sep_jul_scaled\
-abs_ppt_mm_diff_apr_jul_scaled\
-abs_tave_diff_midparent_sep_nov_scaled\
-abs_tave_diff_midparent_dec_mar_scaled\
-abs_tave_diff_midparent_apr_jul_scaled\
-abs_tave_diff_midparent_sep_jul_scaled\
-abs_ppt_mm_diff_midparent_apr_jul_scaled\
-fst_wc_scaled\
-fst_wc_hfs}
+site: AD or AQ. All sites/populations are referred to with 2-letter codes, these can be matched up with the names and ID codes used in the manuscript using data/pops_table. \
+\
+blk: Planting block (10 per site). Labeled AD01, AD02, etc. \
+\
+type: GF (gene flow/between-population) or WI (within-population). Gene flow crosses have dams from the local population (either AQ or AD) and a sire from another population. Within-population crosses have both parents from the same population (any of the two locals or the 13 foreigns).\
+\
+sire: Sire ID. First two letters indicate the sire population, the following numbers refer to the individual. When these are followed by a decimal place, it indicates plants from the same family (i.e. at least half sibs). For example, AD93.3 and AD93.2 are from the same seed family. \
+\
+sirepop: Sire population (can be cross-referenced with map ID and name using data/pops_table). \
+\
+dam: Dam ID. First two letters indicate the dam population, the following numbers refer to the individual. When these are followed by a decimal place, it indicates plants from the same family (i.e. at least half sibs). For example, AD93.3 and AD93.2 are from the same seed family. \
+\
+dampop: Dam population (can be cross-referenced with map ID and name using data/pops_table). \
+\
+nov_germ: Did the seed germinate? 0 = no, 1 = yes.\
+\
+nov_size: Tip-to-tip leaf distance (to the nearest millimeter) of seedlings during the germination census.\
+\
+mar_surv: Did the plant survive to March? 0 = no, 1 = yes. Note that if both seeds germinated at a given planting site in November, one was thinned, so for subsequent timepoints it will have NA.\
+\
+mar_size: Tip-to-tip leaf distance (to the nearest millimeter) of seedlings during the overwinter census (note that I initially only measure one leaf, and multiplied it by 2 to be the same metric as the germination census.\
+\
+fruit_count: Number of fruits.\
+\
+total_est_seeds: Total estimated number of seeds, rounded to the nearest whole number.\
+\
+abs_tave_diff_sep_nov: Absolute value of the difference, in degrees C, between the experiment conditions and the average temperature in September-November between 1951 and 1980 in the home site of the population.\
+\
+abs_tave_diff_sep_nov_scaled: As above, but with the mean subtracted and divided by the standard deviation.\
+\
+abs_tave_diff_dec_mar: Absolute value of the difference, in degrees C, between the experiment conditions and the average temperature in December-March between 1951 and 1980 in the home site of the population.\
+\
+abs_tave_diff_dec_mar_scaled: As above, but with the mean subtracted and divided by the standard deviation.\
+\
+abs_tave_diff_apr_jul: Absolute value of the difference, in degrees C, between the experiment conditions and the average temperature in April-July between 1951 and 1980 in the home site of the population.\
+\
+abs_tave_diff_apr_jul_scaled: As above, but with the mean subtracted and divided by the standard deviation.\
+\
+abs_tave_diff_sep_jul: Absolute value of the difference, in degrees C, between the experiment conditions and the average temperature in September-July between 1951 and 1980 in the home site of the population.\
+\
+abs_tave_diff_sep_jul_scaled: As above, but with the mean subtracted and divided by the standard deviation.\
+\
+abs_ppt_mm_diff_apr_jul: Absolute value of the difference, in millimeters, between the experiment conditions and the average precipitation in April-July between 1951 and 1980 in the home site of the population.\
+\
+abs_ppt_mm_diff_apr_jul_scaled: As above, but with the mean subtracted and divided by the standard deviation.\
+\
+abs_tave_diff_midparent_sep_nov: Absolute value of the difference, in degrees C, between the experiment conditions and the average temperature in September-November between 1951 and 1980 in the home site(s) of the parental populations. Average difference from the two parental populations. For within-population crosses, this is equivalent to abs_tave_diff_sep_nov.  \
+\
+abs_tave_diff_midparent_sep_nov_scaled: As above, but with the mean subtracted and divided by the standard deviation.\
+\
+abs_tave_diff_midparent_dec_mar: Absolute value of the difference, in degrees C, between the experiment conditions and the average temperature in December-March between 1951 and 1980 in the home site(s) of the parental populations. Average difference from the two parental populations. For within-population crosses, this is equivalent to abs_tave_diff_dec_mar.  \
+\
+abs_tave_diff_midparent_dec_mar_scaled: As above, but with the mean subtracted and divided by the standard deviation.\
+\
+abs_tave_diff_midparent_apr_jul: Absolute value of the difference, in degrees C, between the experiment conditions and the average temperature in April-July between 1951 and 1980 in the home site(s) of the parental populations. Average difference from the two parental populations. For within-population crosses, this is equivalent to abs_tave_diff_apr_jul.  \
+\
+abs_tave_diff_midparent_apr_jul_scaled: As above, but with the mean subtracted and divided by the standard deviation.\
+\
+abs_tave_diff_midparent_sep_jul: Absolute value of the difference, in degrees C, between the experiment conditions and the average temperature in September-July between 1951 and 1980 in the home site(s) of the parental populations. Average difference from the two parental populations. For within-population crosses, this is equivalent to abs_tave_diff_sep_jul.  \
+\
+abs_tave_diff_midparent_sep_jul_scaled: As above, but with the mean subtracted and divided by the standard deviation.\
+\
+abs_ppt_mm_diff_midparent_apr_jull: Absolute value of the difference, in degrees C, between the experiment conditions and the average temperature in April-July between 1951 and 1980 in the home site(s) of the parental populations. Average difference from the two parental populations. For within-population crosses, this is equivalent to abs_tave_diff_apr_jul.  \
+\
+abs_ppt_mm_diff_midparent_apr_jul_scaled: As above, but with the mean subtracted and divided by the standard deviation.\
+\
+fst_wc_hfs: FST between the two parental populations.\
+\
+fst_wc_scaled: As above, but with the mean subtracted and divided by the standard deviation.\
+\
+dist: Geographic distance in km of the donor/foreign population from the transplant gardens (averaged over the two gardens.}
