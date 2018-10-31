@@ -1,8 +1,8 @@
+# Do the effects of gene flow depend upon the genetic differentiation between focal and donor populations?
+# referenced in figure 5, table S5, table S6
+
 library(tidyverse)
-library(cowplot)
-library(GGally)
 library(glmmTMB) # version 0.2.2.0
-library(ggeffects) # version 0.3.0 
 
 
 # load data ---------------------------------------------------------------
@@ -307,76 +307,5 @@ results_round = rapply(object = results_fst, f = round, classes = "numeric", how
 write.csv(results_round, "results/fst_table.csv", row.names = FALSE)
 
 
-
-
-
-# plot --------------------------------------------------------------------
-
-# pr.fst.seedsall.full.site = bind_cols(pr.fst.seedsall.full.sort, distances)
-# generate raw means
-plants_gf_means = plants_gf_seeds %>% dplyr::group_by(fst_wc_scaled, fst_wc_hfs, dist, abs_tave_diff_sep_jul_scaled) %>% 
-  dplyr::summarize(total_est_seeds = mean(total_est_seeds))
-
-# generate model prediction and CI
-pr.fst.seedsall = ggpredict(seedsall.fst.mod, c("fst_wc_scaled"), typical = "median")
-mean(pr.fst.seedsall$predicted)
-plot(pr.fst.seedsall)
-
-# rescale x-axis back to original units
-sc = lm(plants_gf$fst_wc_hfs ~ 0 + plants_gf$fst_wc_scaled)
-s = sc$coefficients[1]
-m = mean(plants_gf$fst_wc_hfs, na.rm = TRUE)
-
-# main plot
-
-ggplot(data = pr.fst.seedsall, aes(x = x, y = predicted)) +
-  geom_line(size = 1) + 
-  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.3) +
-  geom_line(size = 1) + 
-  geom_point(data = plants_gf_means, aes(fst_wc_scaled, total_est_seeds, color = dist), size = 3) +
-  scale_x_continuous(breaks = c((0-m)/s, (0.05-m)/s, (0.1-m)/s, (0.15-m)/s, (0.2-m)/s, (0.25-m)/s),
-                     labels = c(0, 0.05, 0.1, 0.15, 0.2, 0.25)) +
-  xlab(expression(Genetic~differentiation~(F[ST]))) +
-  ylab("Predicted lifetime fitness") +
-  guides(shape = FALSE, color = guide_colorbar(title = "Distance\nfrom gardens\n(km)", ticks = FALSE)) +
-  theme(legend.title=element_text(size=12), legend.position = c(0.05, 0.75)) +
-  scale_color_gradient(low = "dodgerblue", high  = "maroon2") +
-  ylim(c(0, 30))
-
-# plot regression coefficients as panels
-
-bTMB <- fixef(seedsall.fst.mod)$cond[-1]
-seTMB <- diag(vcov(seedsall.fst.mod)$cond)[-1]
-nms <- names(bTMB)
-df <- data.frame(term = c(nms), estimate = unname(c(bTMB)))
-df <- transform(df, upper = estimate + sqrt(c(seTMB)), lower = estimate - sqrt(c(seTMB)))
-
-fst.cond.re = ggplot(df, aes(x = estimate, y = term, xmax = upper, xmin = lower)) +
-  geom_point() +
-  geom_errorbarh(height = 0) +
-  geom_vline(xintercept = 0, linetype = "dashed") +
-  labs(y = "",
-       x = "Regression estimate on\nseed production given survival") +
-  scale_y_discrete(labels = c(expression(P[diff]), expression(T[diff]), expression(F[ST]))) +
-  theme(axis.title = element_text(size = 12)) +
-  xlim(c(-0.15, 0.15))
-
-bTMB <- fixef(seedsall.fst.mod)$zi[-1]
-seTMB <- diag(vcov(seedsall.fst.mod)$zi)[-1]
-nms <- names(bTMB)
-df <- data.frame(term = c(nms), estimate = unname(c(bTMB)))
-df <- transform(df, upper = estimate + sqrt(c(seTMB)), lower = estimate - sqrt(c(seTMB)))
-
-fst.zi.re = ggplot(df, aes(x = -estimate, y = term, xmax = -upper, xmin = -lower)) +
-  geom_point() +
-  geom_errorbarh(height = 0) +
-  geom_vline(xintercept = 0, linetype = "dashed") +
-  labs(y = "",
-       x = "Regression estimate on\nprobability of producing seeds") +
-  scale_y_discrete(labels = c(expression(T[diff]), expression(F[ST]))) +
-  theme(axis.title = element_text(size = 12)) +
-  xlim(c(-0.17, 0.17))
-
-plot_grid(fst.zi.re, fst.cond.re, ncol = 1, rel_heights = c(0.4, 0.6))
 
 

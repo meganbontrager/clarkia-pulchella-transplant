@@ -1,16 +1,10 @@
-# what drives fitness of within-pops groups?
-
+# Does climate of origin explain performance in common gardens?
+# referenced in figure 3, table S3
 
 # libraries ---------------------------------------------------------------
 
 library(tidyverse)
-library(cowplot)
 library(glmmTMB) # version 0.2.2.0
-packageVersion("glmmTMB")
-library(GGally)
-library(ggeffects) # version 0.3.0
-packageVersion("ggeffects")
-
 
 
 # load the data -----------------------------------------------------------
@@ -155,82 +149,3 @@ results_round = rapply(object = results_wi, f = round, classes = "numeric", how 
 
 # write.csv(results_round, "results/wi_table.csv", row.names = FALSE)
 
-
-# plot of full model ------------------------------------------------------
-
-# mean precip for plotting (should be close to 0 but not exactly since data has been subsetted since scaling)
-mean(plants_wi_seeds$abs_ppt_mm_diff_apr_jul_scaled)
-# -0.1238543
-
-# mean of raw data
-mean(plants_wi_seeds$total_est_seeds)
-# 11.12115
-
-# generate model predictions
-pr.wi.seedsall = ggpredict(seedsall.wi.mod, terms = c("abs_tave_diff_sep_jul_scaled", "abs_ppt_mm_diff_apr_jul_scaled [-0.1238543]"), ci.lvl = 0.95, type = "fe", typical = "median", pretty = FALSE)
-plot(pr.wi.seedsall)
-mean(pr.wi.seedsall$predicted)
-
-# generate raw means
-plants_wi_means = plants_wi %>% group_by(abs_tave_diff_sep_jul_scaled, local_foreign, dist) %>% summarize(x = mean(abs_tave_diff_sep_jul_scaled), total_est_seeds = mean(total_est_seeds, na.rm = TRUE))
-
-# rescale x-axis to original units
-sc = lm(plants$abs_tave_diff_sep_jul ~ 0 + plants$abs_tave_diff_sep_jul_scaled)
-s = sc$coefficients[1]
-m = mean(plants$abs_tave_diff_sep_jul)
-
-# plot
-ggplot(data = pr.wi.seedsall, aes(x = x, y = predicted)) +
-  geom_line(size = 1) + 
-  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.3) +
-  geom_line(size = 1) + 
-  geom_point(data = plants_wi_means, aes(x, total_est_seeds, shape = local_foreign, color = dist), size = 3) +
-  scale_x_continuous(breaks = c((0-m)/s, (1-m)/s, (2-m)/s, (3-m)/s, (4-m)/s),
-                     labels = c(0, 1, 2, 3, 4)) +
-  xlab("Absolute temperature difference (°C)") +
-  ylab("Predicted lifetime fitness") +
-  guides(shape = FALSE, color = guide_colorbar(title = "Distance\nfrom gardens\n(km)", ticks = FALSE)) +
-  theme(legend.title=element_text(size=12), legend.position = c(0.7, 0.7)) +
-  scale_color_gradient(low = "dodgerblue", high  = "maroon2") +
-  ylim(c(0, 40))
-
-
-# plot regression coefficients as panels ----------------------------------
-
-# coefficient plot code is from here:
-# https://www.fromthebottomoftheheap.net/2017/05/04/compare-mgcv-with-glmmTMB/
-
-bTMB <- fixef(seedsall.wi.mod)$cond[-1]
-seTMB <- diag(vcov(seedsall.wi.mod)$cond)[-1]
-nms <- names(bTMB)
-df <- data.frame(term = c(nms), estimate = unname(c(bTMB)))
-df <- transform(df, upper = estimate + 1.96*sqrt(c(seTMB)), lower = estimate - 1.96*sqrt(c(seTMB)))
-
-seeds.cond.reg = ggplot(df, aes(x = estimate, y = term, xmax = upper, xmin = lower)) +
-  geom_point() +
-  geom_errorbarh(height = 0) +
-  geom_vline(xintercept = 0, linetype = "dashed") +
-  labs(y = "",
-       x = "Regression estimate on\nseed production given survival") +
-  scale_y_discrete(labels = c(expression(P[diff]), expression(T[diff]))) +
-  theme(axis.title = element_text(size = 12), axis.text.x = element_text(size = 10)) +
-  xlim(c(-0.25, 0.25))
-
-bTMB <- fixef(seedsall.wi.mod)$zi[-1]
-seTMB <- diag(vcov(seedsall.wi.mod)$zi)[-1]
-nms <- names(bTMB)
-df <- data.frame(term = c(nms), estimate = (unname(c(bTMB))))
-df <- transform(df, upper = (estimate + 1.96*sqrt(c(seTMB))), lower = (estimate - 1.96*sqrt(c(seTMB))))
-
-seeds.zi.reg = ggplot(df,  aes(x = -estimate, y = term, xmax = -upper, xmin = -lower)) +
-  geom_point() +
-  geom_errorbarh(height = 0) +
-  geom_vline(xintercept = 0, linetype = "dashed") +
-  scale_y_discrete(labels = c(expression(T[diff]))) +
-  labs(y = "",
-       x = "Regression estimate on\nprobability of producing seeds") +
-  theme(axis.title = element_text(size = 12), axis.text.x = element_text(size = 10)) +
-  xlim(c(-0.5, 0.5))
-
-# plot the whole thing
-plot_grid(seeds.cond.reg, seeds.zi.reg, ncol = 1)

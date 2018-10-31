@@ -1,15 +1,10 @@
-# do local edge populations outperform foreign populations?
+# Did local populations outperform foreign populations?
+# referenced in figure S4, table S2
 
 # libraries ---------------------------------------------------------------
 
 library(tidyverse)
-library(cowplot)
 library(glmmTMB) # version 0.2.2.0
-packageVersion("glmmTMB")
-library(ggeffects) # version 0.3.3
-packageVersion("ggeffects")
-
-
 
 # load data ---------------------------------------------------------------
 
@@ -135,27 +130,6 @@ write.csv(results_round, "results/la_table.csv", row.names = FALSE)
 
 
 
-# plotting predictions from overall model ---------------------------------
 
-# raw mean
-mean(plants_wi_seeds$total_est_seeds)
-# 11.12115
-
-# generate model predictions and CIs
-pr.seedsall = ggpredict(seedsall.lf.mod, c("local_foreign"), ci.lvl = 0.95, typical = "mean")
-pr.seedsall$x = c("foreign", "local")
-pr.seedsall$predicted
-# 11.51867 10.52239, reasonable match to raw mean
-
-# generate raw averages per sire for plotting
-real.seedsall = plants_wi %>% group_by(local_foreign, sire) %>% dplyr::summarize(mu = mean(total_est_seeds, na.rm = TRUE))
-
-# plot predictions and raw sire averages
-ggplot(data = pr.seedsall, aes(x = x, y = predicted)) +
-  geom_jitter(data = real.seedsall, aes(x = local_foreign, y = mu), alpha = 0.4) +
-  geom_point(size = 3) +
-  geom_linerange(aes(ymin = conf.low, ymax = conf.high), size = 1.5) +
-  ylab("Lifetime fitness") +
-  xlab("Foreign vs. local origin")
 
 

@@ -1,5 +1,5 @@
-# are there effects of gene flow in addition to environment?
-
+# Does gene flow help or hurt edge populations?
+# referenced in Figure 4, Table S4
 
 # libraries ---------------------------------------------------------------
 
@@ -152,46 +152,4 @@ results_round = rapply(object = results_gf, f = round, classes = "numeric", how 
 # write.csv(results_round, "results/gf_table.csv", row.names = FALSE)
 
 
-
-# plot regression coefficients --------------------------------------------
-
-# coefficient plot code is from here:
-# https://www.fromthebottomoftheheap.net/2017/05/04/compare-mgcv-with-glmmTMB/
-
-bTMB <- fixef(seedsall.gf.mod)$cond[-1]
-seTMB <- diag(vcov(seedsall.gf.mod)$cond)[-1]
-nms <- names(bTMB)
-df <- data.frame(term = c(nms), estimate = unname(c(bTMB)))
-df <- transform(df, upper = estimate + sqrt(c(seTMB)), lower = estimate - sqrt(c(seTMB)))
-df[2,c(2:4)] = -df[2,c(2:4)] # change wi to gf
-
-seeds.cond.re = ggplot(df, aes(x = estimate, y = term, xmax = upper, xmin = lower)) +
-  geom_point() +
-  geom_errorbarh(height = 0) +
-  geom_vline(xintercept = 0, linetype = "dashed") +
-  labs(y = "",
-       x = "Regression estimate on\nseed production given survival") +
-  scale_y_discrete(labels = c(expression(P[diff]), expression(T[diff]), "GF")) +
-  theme(axis.title = element_text(size = 12), axis.text.x = element_text(size = 10)) +
-  xlim(c(-0.2, 0.2))
-
-bTMB <- fixef(seedsall.gf.mod)$zi[-1]
-seTMB <- diag(vcov(seedsall.gf.mod)$zi)[-1]
-nms <- names(bTMB)
-df <- data.frame(term = c(nms), estimate = (unname(c(bTMB))))
-df <- transform(df, upper = (estimate + sqrt(c(seTMB))), lower = (estimate - sqrt(c(seTMB))))
-df[2,c(2:4)] = -df[2,c(2:4)]
-
-seeds.zi.reg = ggplot(df,  aes(x = -estimate, y = term, xmax = -upper, xmin = -lower)) +
-  geom_point() +
-  geom_errorbarh(height = 0) +
-  geom_vline(xintercept = 0, linetype = "dashed") +
-  scale_y_discrete(labels = c(expression(T[diff]), "GF")) +
-  labs(y = "",
-       x = "Regression estimate on\nprobability of producing seeds") +
-  theme(axis.title = element_text(size = 12), axis.text.x = element_text(size = 10)) +
-  xlim(c(-0.3, 0.3))
-
-# plot whole thing
-plot_grid(seeds.cond.reg, seeds.zi.reg, ncol = 1, labels = c("B", "C"))
 

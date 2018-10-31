@@ -1,14 +1,10 @@
-# do edge populations have an advantage once climate is accounted for?
+# Do local populations have an advantage once climate is accounted for?
+# referenced in supplementary analyses 2
 
 # libraries ---------------------------------------------------------------
 
 library(tidyverse)
-library(cowplot)
 library(glmmTMB) # version 0.2.2.0
-packageVersion("glmmTMB")
-library(ggeffects) # version 0.3.3
-packageVersion("ggeffects")
-
 
 
 # load data ---------------------------------------------------------------
@@ -124,7 +120,11 @@ for (i in 1:length(mod_list)){
 results_la = results_new %>% 
   unite(model, model, part, remove = TRUE, sep = ".") %>% 
   gather(var, value, c(3:11)) %>% 
-  # filter(!is.na(value)) %>% 
+  mutate(var = ifelse(var %in% c("abs_tave_diff_apr_jul_scaled", "abs_tave_diff_dec_mar_scaled", 
+                                 "abs_tave_diff_sep_jul_scaled", "abs_tave_diff_sep_nov_scaled", 
+                                 "abs_tave_diff_apr_may_scaled"), "temp", var)) %>%
+  mutate(var = ifelse(var %in% c("abs_ppt_mm_diff_apr_jul_scaled", "abs_ppt_mm_diff_apr_may_scaled"), "ppt", var)) %>% 
+  filter(!is.na(value)) %>%
   unite(variable, var, rowname, sep = ":") %>% 
   spread(variable, value)
 
