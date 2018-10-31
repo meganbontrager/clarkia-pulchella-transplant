@@ -99,4 +99,37 @@ nrow(filter(plants_wi, mar_surv == 1, !is.na(mar_size_scaled), !is.na(total_est_
 # 3176
 
 
+# build a results table ---------------------------------------------------
+
+mod_list = ls(pattern = "*.mod")
+
+for (i in 1:length(mod_list)){
+  mod = get(as.character(mod_list[i]))
+  mod_sum = summary(get(as.character(mod_list[i])))
+  c = rownames_to_column(data.frame(t(mod_sum$coefficients$cond)))
+  c1 = cbind(model = paste(mod_list[i]), part = "cond", c) 
+  if (is.null(mod_sum$coefficients$zi)) {
+    z = NA
+    z1 = NA
+    results = c1
+  } else {
+    z = rownames_to_column(data.frame(t(mod_sum$coefficients$zi)))
+    z1 = cbind(model = paste(mod_list[i]), part = "zi", z) 
+    results = bind_rows(c1, z1)
+  }
+  if (i == 1) results_new = results else results_new = bind_rows(results_old, results)
+  results_old = results_new
+}
+
+results_la = results_new %>% 
+  unite(model, model, part, remove = TRUE, sep = ".") %>% 
+  gather(var, value, c(3:11)) %>% 
+  # filter(!is.na(value)) %>% 
+  unite(variable, var, rowname, sep = ":") %>% 
+  spread(variable, value)
+
+results_round = rapply(object = results_la, f = round, classes = "numeric", how = "replace", digits = 3) 
+
+write.csv(results_round, "results/raw_tables/la_table_climate.csv", row.names = FALSE)
+
 
