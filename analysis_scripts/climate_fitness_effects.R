@@ -10,11 +10,11 @@ library(glmmTMB) # version 0.2.2.0
 # load the data -----------------------------------------------------------
 
 # load within-population crosses
-plants_wi = read.csv("data/all_data.csv") %>% filter(type == "WI") %>% arrange(abs_tave_diff_sep_jul_scaled)
+plants_wi = read.csv("data/Bontrager_transplant_data.csv") %>% filter(type == "WI") %>% arrange(abs_tave_diff_sep_jul_scaled)
 # 16125
 
 # load full data frame (only used to rescale axis in plot)
-plants = read.csv("data/all_data.csv") %>% arrange(abs_tave_diff_sep_jul_scaled)
+plants = read.csv("data/Bontrager_transplant_data.csv") %>% arrange(abs_tave_diff_sep_jul_scaled)
 
 # create local/foreign column (for plotting)
 plants_wi$local_foreign = ifelse((plants_wi$sirepop == "AQ" & plants_wi$site == "AQ")|(plants_wi$sirepop == "AD" & plants_wi$site == "AD"), "local", "foreign")

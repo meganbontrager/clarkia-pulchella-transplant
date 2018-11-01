@@ -10,7 +10,7 @@ library(glmmTMB) # version 0.2.2.0
 # load data ---------------------------------------------------------------
 
 # load data and filter to within-population crosses
-plants_wi =  read.csv("data/all_data.csv") %>% filter(type == "WI")
+plants_wi =  read.csv("data/Bontrager_transplant_data.csv") %>% filter(type == "WI")
 
 # create local/foreign column where focal pops in their home sites are designated as local
 plants_wi$local_foreign = ifelse((plants_wi$sirepop == "AQ" & plants_wi$site == "AQ")|(plants_wi$sirepop == "AD" & plants_wi$site == "AD"), "local", "foreign")

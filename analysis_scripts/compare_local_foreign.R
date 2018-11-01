@@ -10,7 +10,7 @@ library(glmmTMB) # version 0.2.2.0
 
 # data --------------------------------------------------------------------
 
-plants = read.csv("data/all_data.csv") %>% filter(type == "WI")
+plants = read.csv("data/Bontrager_transplant_data.csv") %>% filter(type == "WI")
 
 # generate local/foreign warmer/foreign cooler column
 plants$local_foreign_warmer = as.factor(ifelse((plants$sirepop == "AQ" & plants$site == "AQ")|(plants$sirepop == "AD" & plants$site == "AD"), "local", 

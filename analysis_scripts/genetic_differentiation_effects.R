@@ -8,7 +8,7 @@ library(glmmTMB) # version 0.2.2.0
 # load data ---------------------------------------------------------------
 
 # load and filter to between-population crosses
-plants_gf = read.csv("data/all_data.csv") %>% filter(type == "GF")
+plants_gf = read.csv("data/Bontrager_transplant_data.csv") %>% filter(type == "GF")
 nrow(plants_gf)
 # 16236
 

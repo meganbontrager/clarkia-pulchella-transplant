@@ -14,7 +14,7 @@ library(ggeffects) # version 0.3.0
 # load data ---------------------------------------------------------------
 
 # load full data
-plants = read.csv("data/all_data.csv") 
+plants = read.csv("data/Bontrager_transplant_data.csv") 
 
 # generate local/foreign column
 plants$local_foreign = ifelse((plants$sirepop == "AQ" & plants$site == "AQ")|(plants$sirepop == "AD" & plants$site == "AD"), "local", "foreign")
